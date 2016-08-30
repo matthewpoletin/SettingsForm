@@ -2,13 +2,14 @@
 
 Settings::Settings()
 {
-	//this->SetDefault();
+	performer = gcnew System::String("");
 }
 
 void Settings::SetDefault()
 {
 	bUseRubberPad = true;
 	rubberPadSize = 0.92f;
+	performer = "";
 }
 
 void Settings::LoadSettings()
@@ -19,6 +20,7 @@ void Settings::LoadSettings()
 	{
 		bUseRubberPad = Convert::ToBoolean(appSettings[L"useRubberPad"]);
 		rubberPadSize = Convert::ToSingle(appSettings[L"rubberPadSize"]);
+		performer = appSettings[L"performer"];
 	}
 	else
 	{
@@ -33,11 +35,13 @@ void Settings::SaveSettings()
 	{
 		settings[L"useRubberPad"]->Value = bUseRubberPad.ToString();
 		settings[L"rubberPadSize"]->Value = rubberPadSize.ToString();
+		settings[L"performer"]->Value = performer;
 	}
 	else
 	{
 		settings->Add(L"useRubberPad", bUseRubberPad.ToString());
 		settings->Add(L"rubberPadSize", rubberPadSize.ToString());
+		settings->Add(L"performer", performer);
 	}
 	configFile->Save(ConfigurationSaveMode::Modified);
 	ConfigurationManager::RefreshSection(configFile->AppSettings->SectionInformation->Name);
@@ -46,6 +50,8 @@ void Settings::SaveSettings()
 bool Settings::IsSettingsSet()
 {
 	auto appSettings = ConfigurationManager::AppSettings;
-	return	appSettings[L"useRubberPad"] != nullptr/* &&
-		appSettings[L"rubberPadSize"] != nullptr*/;
+	return	appSettings[L"useRubberPad"] != nullptr &&
+			appSettings[L"rubberPadSize"] != nullptr &&
+			appSettings[L"performer"] != nullptr;
+
 }

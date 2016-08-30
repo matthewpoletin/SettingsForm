@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SettingsForm.h"
+#include "AboutForm.h"
 
 namespace Project1 {
 
@@ -31,11 +32,20 @@ namespace Project1 {
 			}
 		}
 
-	private: System::Windows::Forms::MenuStrip^  menuStripTop;
-	private: System::Windows::Forms::ToolStripMenuItem^  settingsToolStripMenuItem;
+	private:
+		System::Windows::Forms::MenuStrip^  menuStripTop;
+	private: System::Windows::Forms::Label^  labelPerformer;
+
+
+
 
 	private:
 		System::ComponentModel::Container ^components;
+	private: System::Windows::Forms::ToolStripMenuItem^  toolsToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  settingsToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  aboutToolStripMenuItem;
+	private: System::Windows::Forms::TextBox^  textBoxPerformer;
+
 
 	private:
 		Settings^ settings;
@@ -44,32 +54,70 @@ namespace Project1 {
 		void InitializeComponent(void)
 		{
 			this->menuStripTop = (gcnew System::Windows::Forms::MenuStrip());
+			this->toolsToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->settingsToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->aboutToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->labelPerformer = (gcnew System::Windows::Forms::Label());
+			this->textBoxPerformer = (gcnew System::Windows::Forms::TextBox());
 			this->menuStripTop->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// menuStripTop
 			// 
-			this->menuStripTop->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->settingsToolStripMenuItem });
+			this->menuStripTop->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->toolsToolStripMenuItem });
 			this->menuStripTop->Location = System::Drawing::Point(0, 0);
 			this->menuStripTop->Name = L"menuStripTop";
 			this->menuStripTop->Size = System::Drawing::Size(284, 24);
 			this->menuStripTop->TabIndex = 0;
 			this->menuStripTop->Text = L"menuStrip1";
 			// 
+			// toolsToolStripMenuItem
+			// 
+			this->toolsToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->settingsToolStripMenuItem,
+					this->aboutToolStripMenuItem
+			});
+			this->toolsToolStripMenuItem->Name = L"toolsToolStripMenuItem";
+			this->toolsToolStripMenuItem->Size = System::Drawing::Size(59, 20);
+			this->toolsToolStripMenuItem->Text = L"Сервис";
+			// 
 			// settingsToolStripMenuItem
 			// 
 			this->settingsToolStripMenuItem->Name = L"settingsToolStripMenuItem";
-			this->settingsToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::Oemtilde));
-			this->settingsToolStripMenuItem->Size = System::Drawing::Size(79, 20);
+			this->settingsToolStripMenuItem->Size = System::Drawing::Size(149, 22);
 			this->settingsToolStripMenuItem->Text = L"Настройки";
 			this->settingsToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::settingsToolStripMenuItem_Click);
+			// 
+			// aboutToolStripMenuItem
+			// 
+			this->aboutToolStripMenuItem->Name = L"aboutToolStripMenuItem";
+			this->aboutToolStripMenuItem->Size = System::Drawing::Size(149, 22);
+			this->aboutToolStripMenuItem->Text = L"О программе";
+			this->aboutToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::aboutToolStripMenuItem_Click);
+			// 
+			// labelPerformer
+			// 
+			this->labelPerformer->AutoSize = true;
+			this->labelPerformer->Location = System::Drawing::Point(10, 24);
+			this->labelPerformer->Name = L"labelPerformer";
+			this->labelPerformer->Size = System::Drawing::Size(74, 13);
+			this->labelPerformer->TabIndex = 1;
+			this->labelPerformer->Text = L"Исполнитель";
+			// 
+			// textBoxPerformer
+			// 
+			this->textBoxPerformer->Location = System::Drawing::Point(12, 53);
+			this->textBoxPerformer->Name = L"textBoxPerformer";
+			this->textBoxPerformer->Size = System::Drawing::Size(260, 20);
+			this->textBoxPerformer->TabIndex = 2;
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(284, 261);
+			this->Controls->Add(this->textBoxPerformer);
+			this->Controls->Add(this->labelPerformer);
 			this->Controls->Add(this->menuStripTop);
 			this->HelpButton = true;
 			this->MainMenuStrip = this->menuStripTop;
@@ -77,6 +125,7 @@ namespace Project1 {
 			this->Text = L"MyForm";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &MyForm::MyForm_FormClosing);
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &MyForm::MyForm_FormClosed);
+			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->menuStripTop->ResumeLayout(false);
 			this->menuStripTop->PerformLayout();
 			this->ResumeLayout(false);
@@ -85,30 +134,18 @@ namespace Project1 {
 		}
 #pragma endregion
 
-	private:
-		System::Void settingsToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e)
-		{
-			SettingsForm^ sf = gcnew SettingsForm();
-			if (sf)
-			{
-				sf->Init(this->settings);
-				sf->Show();
-			}
-		}
-
 		// TODO: Перенести в выход из настроек без сохранения
 	private:
 		System::Void MyForm_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e)
 		{
-			if (System::Windows::Forms::DialogResult::No == System::Windows::Forms::MessageBox::Show("Exit without saving changes?", "Data Not Saved", MessageBoxButtons::YesNo))
-				e->Cancel = true;
+			//if (System::Windows::Forms::DialogResult::No == System::Windows::Forms::MessageBox::Show("Exit without saving changes?", "Data Not Saved", MessageBoxButtons::YesNo))
+			//	e->Cancel = true;
+			settings->SaveSettings();
 		}
 
 	private:
 		System::Void MyForm_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e)
 		{
-			settings->SaveSettings();
-			Application::Exit();
 			if(System::Windows::Forms::Application::MessageLoop)
 			{
 				// Use this since we are a WinForms app
@@ -119,7 +156,37 @@ namespace Project1 {
 				// Use this since we are a console app
 				System::Environment::Exit(1);
 			}
+		}
 
+	public:
+		void UpdateFromSettings()
+		{
+			this->textBoxPerformer->Text = this->settings->performer;
+		}
+
+	private:
+		System::Void settingsToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e)
+		{
+			SettingsForm^ sf = gcnew SettingsForm();
+			if (sf)
+			{
+				sf->Init(this->settings);
+				sf->ShowDialog();
+				this->UpdateFromSettings();
+			}
+		}
+
+	private:
+		System::Void aboutToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e)
+		{
+			AboutForm^ af = gcnew AboutForm();
+			af->ShowDialog();
+		}
+
+	private:
+		System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e)
+		{
+			textBoxPerformer->Text = settings->performer;
 		}
 
 	};

@@ -18,6 +18,7 @@ private:
 public:
 	bool bUseRubberPad;
 	float rubberPadSize;
+	String^ performer;
 
 public:
 	// Установка значений по умолчанию
