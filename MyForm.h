@@ -34,18 +34,16 @@ namespace Project1 {
 
 	private:
 		System::Windows::Forms::MenuStrip^  menuStripTop;
-	private: System::Windows::Forms::Label^  labelPerformer;
-
-
-
+		System::Windows::Forms::ToolStripMenuItem^  toolsToolStripMenuItem;
+		System::Windows::Forms::ToolStripMenuItem^  settingsToolStripMenuItem;
+		System::Windows::Forms::ToolStripMenuItem^  aboutToolStripMenuItem;
+	
+	private:
+		System::Windows::Forms::Label^  labelPerformer;
+		System::Windows::Forms::TextBox^  textBoxPerformer;
 
 	private:
 		System::ComponentModel::Container ^components;
-	private: System::Windows::Forms::ToolStripMenuItem^  toolsToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^  settingsToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^  aboutToolStripMenuItem;
-	private: System::Windows::Forms::TextBox^  textBoxPerformer;
-
 
 	private:
 		Settings^ settings;
@@ -146,16 +144,16 @@ namespace Project1 {
 	private:
 		System::Void MyForm_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e)
 		{
-			if(System::Windows::Forms::Application::MessageLoop)
-			{
-				// Use this since we are a WinForms app
-				System::Windows::Forms::Application::Exit();
-			}
-			else
-			{
-				// Use this since we are a console app
-				System::Environment::Exit(1);
-			}
+			//if(System::Windows::Forms::Application::MessageLoop)
+			//{
+			//	// Use this since we are a WinForms app
+			//	System::Windows::Forms::Application::Exit();
+			//}
+			//else
+			//{
+			//	// Use this since we are a console app
+			//	System::Environment::Exit(1);
+			//}
 		}
 
 	public:
