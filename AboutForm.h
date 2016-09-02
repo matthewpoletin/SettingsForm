@@ -32,9 +32,8 @@ namespace Project1 {
 		System::Windows::Forms::Label^  labelVersionName;
 		System::Windows::Forms::Label^  labelVerisonNumber;
 		System::Windows::Forms::LinkLabel^  linkLabelSite;
+		System::Windows::Forms::LinkLabel^  linkLabelManual;
 		System::Windows::Forms::Button^  buttonOK;
-	private: System::Windows::Forms::LinkLabel^  linkLabelManual;
-
 
 		System::ComponentModel::Container ^components;
 
@@ -80,7 +79,6 @@ namespace Project1 {
 			this->buttonOK->TabIndex = 0;
 			this->buttonOK->Text = L"OK";
 			this->buttonOK->UseVisualStyleBackColor = true;
-			this->buttonOK->Click += gcnew System::EventHandler(this, &AboutForm::buttonOK_Click);
 			// 
 			// tableLayoutPanelContent
 			// 
@@ -182,8 +180,9 @@ namespace Project1 {
 		#else
 			versionConfigurationType = "beta";
 			versionConfigurationNumber = "1";
+			versionConfigurationNumber = "." + versionConfigurationNumber;
 		#endif
-			this->labelVerisonNumber->Text = versionNumber + "-" + versionConfigurationType + "." + versionConfigurationNumber;
+			this->labelVerisonNumber->Text = versionNumber + "-" + versionConfigurationType + versionConfigurationNumber;
 		}
 
 	private:
@@ -193,12 +192,6 @@ namespace Project1 {
 			myProcess->StartInfo->UseShellExecute = true;
 			myProcess->StartInfo->FileName = "http://www.acsys.ru/production/preobrazovateli/";
 			myProcess->Start();
-		}
-
-	private:
-		System::Void buttonOK_Click(System::Object^  sender, System::EventArgs^  e)
-		{
-			this->Close();
 		}
 
 	private:
